@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>مسابقه‌ی افعال عربی</title>
+  <!-- فونت وزیر -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css">
+  <style>
+    :root{
+      --bg: linear-gradient(135deg, #f0f5ff, #e0eaff);
+      --panel:#ffffff;
+      --accent:#2e7d32;
+      --danger:#e53935;
+      --muted:#6b7280;
+      --card:#eef4ff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;padding:24px;background:var(--bg);font-family:"Vazir",system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;color:#0b274b}
+    .wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:22px;align-items:start;opacity:0;transform:translateY(6px);transition:opacity 0.5s ease, transform 0.5s ease}
+
+    button{cursor:pointer;padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:#fff;font-weight:600;font-family:"Vazir";transition:background 0.3s ease, transform 0.2s ease}
+    button:hover{transform:scale(1.03);background:#256628}
+    button.ghost{background:transparent;color:var(--accent);border:1px solid rgba(46,125,50,0.14);transition:background 0.3s ease, transform 0.2s ease}
+    button.ghost:hover{background:rgba(46,125,50,0.1);transform:scale(1.03)}
+
+    .panel{background:var(--panel);border-radius:14px;padding:18px;box-shadow:0 8px 20px rgba(15,23,42,0.06);transition:transform 0.3s ease, opacity 0.3s ease;opacity:0;transform:translateY(8px);}
+    .panel.visible{opacity:1;transform:translateY(0)}
+
+    .question-box{background:linear-gradient(180deg,#e8f7ff,#f4f9ff);border-radius:14px;padding:22px;text-align:center;font-weight:700;font-size:20px;color:#05305a;box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);transition:background 0.5s ease}
+    .verb{font-size:34px;margin:8px 0;direction:rtl;transition:color 0.3s ease}
+    .answers{display:flex;gap:18px;margin-top:18px;transition:opacity 0.3s ease;flex-wrap:wrap}
+    .card{flex:1;background:var(--card);border-radius:12px;padding:22px;text-align:center;cursor:pointer;transition:transform 0.25s ease,box-shadow 0.25s ease,background 0.25s ease;user-select:none;position:relative;min-height:110px;display:flex;flex-direction:column;justify-content:center}
+    .card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 10px 26px rgba(12,40,80,0.06)}
+    .badge{position:absolute;top:-12px;left:-12px;background:var(--accent);color:#fff;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;transition:transform 0.3s ease}
+    .card-text span{display:block;font-size:18px;font-weight:700;line-height:1.5;transition:color 0.3s ease}
+    .card.correct{background:var(--accent);color:#fff;box-shadow:0 10px 26px rgba(46,125,50,0.12);transform:scale(1.05)}
+    .card.wrong{background:var(--danger);color:#fff;box-shadow:0 10px 26px rgba(229,57,53,0.12);transform:scale(1.05)}
+
+    /* meta area */
+    .meta{display:flex;justify-content:space-between;gap:12px;margin-top:14px;align-items:center;transition:opacity 0.3s ease}
+    .meta .score{font-weight:800;color:var(--accent);font-size:18px}
+    .meta .timer{font-weight:900;color:#05305a;font-size:28px}
+    .meta .timer.urgent{color:var(--danger)}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* admin panel grid layout */
+    .admin-panel{position:fixed;top:10%;left:50%;transform:translateX(-50%) scale(0.96);background:var(--panel);border-radius:14px;padding:16px;box-shadow:0 18px 40px rgba(15,23,42,0.12);max-width:900px;width:92%;opacity:0;transition:transform 0.36s cubic-bezier(.2,.9,.3,1), opacity 0.36s ease;z-index:3000;display:none}
+    .admin-panel.open{display:grid;opacity:1;transform:translateX(-50%) scale(1);grid-template-columns:1fr 320px;gap:12px}
+    .admin-panel h3{margin:0 0 10px 0;font-size:16px}
+    .admin-left{display:flex;flex-direction:column;gap:10px}
+    .admin-right{display:flex;flex-direction:column;gap:10px}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    textarea{width:100%;min-height:80px;padding:8px;border-radius:8px;border:1px solid #e6eef8;background:#fbfdff;resize:vertical;transition:border 0.3s ease;font-family:"Vazir"}
+    textarea:focus{border-color:var(--accent)}
+    .field{margin-bottom:12px}
+    .row{display:flex;gap:8px}
+    input[type="number"], input[type="text"]{width:100%;padding:8px;border-radius:8px;border:1px solid #e6eef8;transition:border 0.3s ease;font-family:"Vazir"}
+    input[type="number"]:focus, input[type="text"]:focus{border-color:var(--accent)}
+    .score-list{max-height:320px;overflow:auto;border-radius:8px;background:#fbfdff;padding:8px;border:1px solid #eef6ff;transition:background 0.3s ease}
+    .score-item{display:flex;justify-content:space-between;padding:8px;border-bottom:1px dashed #eef6ff;transition:background 0.3s ease}
+    .score-item:hover{background:rgba(46,125,50,0.05)}
+    .footer-actions{display:flex;gap:8px;margin-top:8px}
+
+    .modal{position:fixed;inset:0;background:rgba(3,6,23,0.45);display:none;align-items:center;justify-content:center;padding:20px;transition:opacity 0.3s ease}
+    .modal.open{display:flex;opacity:1}
+    .modal-card{background:#fff;padding:18px;border-radius:12px;min-width:320px;max-width:520px;transition:transform 0.28s ease;text-align:center}
+    .modal-card{transform:scale(0.96)}
+    .modal.open .modal-card{transform:scale(1)}
+    .muted{color:var(--muted)}
+
+    /* صفحه intro */
+    #intro{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2000;transition:opacity 0.8s ease-in-out, visibility 0.8s;}
+    #intro h1{font-size:48px;margin:0;color:#05305a;transition:transform 0.5s ease}
+    #intro p{font-size:20px;margin-top:10px;color:var(--muted);transition:transform 0.5s ease}
+    #intro.hidden{opacity:0;visibility:hidden}
+    #intro .skip-hint{margin-top:12px;font-size:13px;color:var(--muted)}
+
+    @media (max-width:1000px){
+      .wrap{grid-template-columns:1fr; padding-bottom:60px}
+      .answers{flex-direction:column}
+      .admin-panel.open{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<div id="intro" role="dialog" aria-modal="true">
+  <h1>بازی وزن افعال عربی روش</h1>
+  <p>ساخته شده توسط: محمد محسن بیک | محمد رادمنش (دبیرستان صلحا)</p>
+  <div class="skip-hint small">برای ادامه کلیک کنید</div>
+</div>
+
+<div class="wrap" aria-live="polite">
+  <header style="display:none"></header>
+  <main>
+    <div class="panel" id="mainPanel" aria-hidden="true">
+      <div class="question-box">
+        <div>وزن فعل ماضی ( <span id="verbDisplay" class="verb"></span> ) با کدام گروه افعال مضارع زیر تشابه دارد !؟</div>
+      </div>
+      <div class="answers" id="answers" aria-label="گزینه‌ها">
+      </div>
+
+      <div class="meta">
+        <div class="score">امتیاز: <span id="score">۰</span></div>
+        <div class="timer" id="timeLeft">۰۰:۰۰</div>
+        <div class="small muted">سوال: <span id="qCount">۰</span></div>
+      </div>
+
+      <!-- دکمه شروع جدید (نمایش داده می‌شود بعد از کلیک روی intro) -->
+      <div id="panelStartContainer" style="display:none;margin-top:14px;justify-content:center;align-items:center;">
+        <button id="startGameBtn">شروع بازی</button>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button id="pauseBtn" class="ghost" disabled>توقف</button>
+        <button id="nextBtn" class="ghost" disabled>عبور</button>
+      </div>
+    </div>
+  </main>
+
+  <div class="admin-panel" id="adminPanel" aria-hidden="true">
+    <div class="admin-left">
+      <h3>پنل مدیریت</h3>
+      <div class="field">
+        <label>زمان مسابقه</label>
+        <div class="row">
+          <button class="timeOpt" data-sec="30">۳۰ ثانیه</button>
+          <button class="timeOpt" data-sec="60">۶۰ ثانیه</button>
+          <button class="timeOpt" data-sec="90">۹۰ ثانیه</button>
+        </div>
+        <div style="margin-top:8px" class="row">
+          <input id="customSeconds" type="number" placeholder="زمان دلخواه (ثانیه)" min="5" />
+          <button id="applyCustom" class="ghost">اعمال</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>لیست گروه (أَفْعَلَ - یُفْعِل - اِفعال)</label>
+        <textarea id="list-ifaal"></textarea>
+        <div class="small muted">هر فعل در یک خط قرار بگیرد یا با ویرگول جدا شود.</div>
+      </div>
+
+      <div class="row">
+        <button id="saveLists">ذخیره لیست‌ها</button>
+        <button id="resetLists" class="ghost">بازنشانی لیست‌ها</button>
+        <button id="resetAll" class="ghost">ریست کامل</button>
+      </div>
+    </div>
+
+    <div class="admin-right">
+      <div>
+        <label>لیست گروه (فَعَّلَ - یُفَعِّلُ - تَفعیل)</label>
+        <textarea id="list-tafeil"></textarea>
+      </div>
+      <div>
+        <label>لیست گروه (فاعَل - یُفاعِلُ - مُفاعَلَة)</label>
+        <textarea id="list-mufaala"></textarea>
+      </div>
+      <hr style="margin:8px 0">
+      <h3>امتیازات ثبت‌شده</h3>
+      <div class="score-list" id="scoreList"></div>
+      <div class="footer-actions">
+        <button id="clearScores" class="ghost">پاک کردن امتیازات</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="nameModal" role="dialog" aria-modal="true">
+  <div class="modal-card" role="document">
+    <h3>زمان به پایان رسید</h3>
+    <p class="muted">امتیاز شما: <strong id="finalScore">۰</strong></p>
+    <div style="margin-top:8px;text-align:center">
+      <label>نام دانش آموز</label>
+      <input id="playerName" type="text" style="width:100%;padding:10px;border-radius:8px;border:1px solid #eef6ff;font-family:'Vazir';font-size:16px" placeholder="اسم را وارد کنید..." />
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px;justify-content:center">
+      <button id="saveScoreBtn">ذخیره امتیاز</button>
+      <button id="dismissModal" class="ghost">انصراف</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ======= دادهٔ اولیه ======= */
+const defaultData = {
+  ifaal: [
+"أَعْطَی","أَكْرَمَ","أَجْرَى","أَخْرَجَ","أَخْفَى","أَرْسَلَ","أَحْيی","أَبْطَلَ","أَلْقى","أَحْضَرَ","أَهْدَى","أَسْرَعَ","أَفْشى","أَحْرَقَ","أَلغی","أَعْلَقَ","أَنْسى","أَلْهَمَ","أَغْنى","أَثْبَتَ","أَحَس","أَشارَ","أَطاع","أَمَدَّ","أَقَرَّ","أَدارَ","أَتَمَّ","أَرادَ","أَصَرَّ","أَقامَ","أَحَبَّ","أَجابَ","أَلَحَّ","أَضافَ","أَحَلَّ","أَعادَ","أَسَرَّ","أَخَافَ","أَقَلَّ","أَهَانَ"
+  ],
+  tafeil: [
+"فَكَّر","عَلَّمَ","شَوَّقَ","كَذَّبَ","وَضَّحَ","وَلَّدَ","غَيَّرَ","دَبَّرَ","هَدَّدَ","عَرَّفَ","غَطّى","رَبّى","زَكّى","صَلّى","قَوّى","أَدّى","سَمّى","سَلّى","غَدَّى","حَيَّى"
+  ],
+  mufaala: [
+"شَاهَدَ","عانَقَ","صافَحَ","راقَبَ","لاحَظَ","زاحَمَ","وَافَقَ","خَالَفَ","سافَرَ","عالَجَ","ساعَدَ","نادى","ساوى","جازى","عانى","حامى","لاقى","ناجى","راعى","عافى","باهى","دارى"
+  ]
+};
+/* ======= کلیدهای localStorage ======= */
+const STORAGE = {
+  lists: 'verbGame:lists',
+  scores:'verbGame:scores',
+  settings:'verbGame:settings'
+};
+/* ======= وضعیت بازی ======= */
+let lists = null;
+let scores = [];
+let settings = { defaultTime: 60 };
+let current = {
+  timeLeft: 0,
+  timerId: null,
+  running:false,
+  score:0,
+  qCount:0,
+  currentVerb:null,
+  currentAnswer:null
+};
+/* ======= ابزارهای ذخیره/بارگذاری ======= */
+function saveJSON(key,obj){ localStorage.setItem(key, JSON.stringify(obj)); }
+function loadJSON(key, fallback){ try{ const v=localStorage.getItem(key); return v?JSON.parse(v):fallback }catch(e){return fallback}}
+function loadLists(){ const saved = loadJSON(STORAGE.lists, null); return saved || JSON.parse(JSON.stringify(defaultData)); }
+function saveLists(){ saveJSON(STORAGE.lists, lists); }
+/* ======= المان‌ها ======= */
+const intro = document.getElementById('intro');
+const wrap = document.querySelector('.wrap');
+const verbDisplay = document.getElementById('verbDisplay');
+const answersEl = document.getElementById('answers');
+const timeLeftEl = document.getElementById('timeLeft');
+const scoreEl = document.getElementById('score');
+const qCountEl = document.getElementById('qCount');
+// start button now inside panel
+const startGameBtn = document.getElementById('startGameBtn');
+const panelStartContainer = document.getElementById('panelStartContainer');
+
+const pauseBtn = document.getElementById('pauseBtn');
+const nextBtn = document.getElementById('nextBtn');
+const adminPanel = document.getElementById('adminPanel');
+const listIfaal = document.getElementById('list-ifaal');
+const listTafeil = document.getElementById('list-tafeil');
+const listMufaala = document.getElementById('list-mufaala');
+const saveListsBtn = document.getElementById('saveLists');
+const resetListsBtn = document.getElementById('resetLists');
+const scoreList = document.getElementById('scoreList');
+const clearScoresBtn = document.getElementById('clearScores');
+const timeOptBtns = document.querySelectorAll('.timeOpt');
+const customSeconds = document.getElementById('customSeconds');
+const applyCustom = document.getElementById('applyCustom');
+const resetAllBtn = document.getElementById('resetAll');
+const nameModal = document.getElementById('nameModal');
+const finalScoreEl = document.getElementById('finalScore');
+const playerNameInput = document.getElementById('playerName');
+const saveScoreBtn = document.getElementById('saveScoreBtn');
+const dismissModal = document.getElementById('dismissModal');
+const mainPanel = document.getElementById('mainPanel');
+
+/* ======= مقداردهی اولیه پنل از داده‌ها ======= */
+function populateTextareas(){
+  listIfaal.value = lists.ifaal.join('\n');
+  listTafeil.value = lists.tafeil.join('\n');
+  listMufaala.value = lists.mufaala.join('\n');
+}
+
+/* ======= رندر امتیازها و نمایش اولیه ======= */
+function renderScores(){
+  scoreList.innerHTML = '';
+  if(!scores || scores.length===0){ scoreList.innerHTML = '<div class="log-item muted">هیچ امتیازی ثبت نشده</div>'; return; }
+  scores.slice(0,200).forEach(s=>{
+    const div = document.createElement('div');
+    div.className = 'score-item';
+    const left = document.createElement('div');
+    left.innerHTML = `<strong>${escapeHtml(s.name)}</strong> — <span class="muted">${new Date(s.time).toLocaleString('fa-IR')}</span>`;
+    const right = document.createElement('div');
+    right.innerHTML = `<strong>${toPersianNum(s.score)}</strong>`;
+    div.appendChild(left); div.appendChild(right);
+    scoreList.appendChild(div);
+  });
+}
+
+/* ======= انیمیشن intro: منتظر کلیک باشد (بدون auto-advance) ======= */
+function runIntroSequence(){
+  intro.classList.remove('hidden');
+  intro.style.display = 'flex';
+  // force reflow for transition
+  void intro.offsetWidth;
+  intro.style.opacity = '1';
+  wrap.style.opacity = '0';
+  wrap.style.transform = 'translateY(6px)';
+
+  const finishIntro = () => {
+    intro.classList.add('hidden');
+    intro.setAttribute('aria-hidden','true');
+    // allow the fade transition to run, سپس remove از لایه
+    setTimeout(()=>{ try{ intro.style.display = 'none'; }catch(e){} }, 380);
+    // reveal main wrap (پنل نمایش سوال‌ها)
+    wrap.style.opacity = '1';
+    wrap.style.transform = 'translateY(0)';
+    // نمایش پنل اصلی (ولی بازی هنوز شروع نشده — فقط دکمهٔ شروع نمایان می‌شود)
+    mainPanel.classList.add('visible');
+    mainPanel.setAttribute('aria-hidden','false');
+    showStartButton();
+  };
+
+  // وقتی کاربر کلیک کرد، intro بسته شود و دکمهٔ شروع نمایان گردد
+  function onClick(){
+    finishIntro();
+    intro.removeEventListener('click', onClick);
+  }
+  intro.addEventListener('click', onClick);
+}
+
+if(document.readyState === 'complete') runIntroSequence(); else window.addEventListener('load', runIntroSequence);
+
+/* ======= منطق بازی ======= */
+const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+function toPersianNum(num){
+  return String(num).split('').map(d => { return /\d/.test(d) ? persianDigits[Number(d)] : d; }).join('');
+}
+function formatTime(sec){
+  const m = Math.floor(sec/60).toString().padStart(2,'0');
+  const s = (sec%60).toString().padStart(2,'0');
+  return `${toPersianNum(m)}:${toPersianNum(s)}`;
+}
+function setTimeDisplay(sec){
+  timeLeftEl.textContent = formatTime(Math.max(0, Math.floor(Number(sec) || 0)));
+  // urgent style when < 10 seconds
+  if(Number(sec) <= 10){ timeLeftEl.classList.add('urgent'); } else { timeLeftEl.classList.remove('urgent'); }
+}
+function setScoreDisplay(n){ scoreEl.textContent = toPersianNum(n); }
+function setQCount(n){ qCountEl.textContent = toPersianNum(n); }
+
+function escapeHtml(str){ return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]); }
+
+function getRandomVerb(previous){
+  const keys = Object.keys(lists).filter(k => lists[k] && lists[k].length>0);
+  if(keys.length===0) return null;
+  const all = [];
+  keys.forEach(k => lists[k].forEach(v => all.push({v,group:k})));
+  if(all.length === 1) return all[0];
+  let idx;
+  do { idx = Math.floor(Math.random()*all.length); } while(previous && all[idx].v === previous);
+  return all[idx];
+}
+function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
+
+function renderAnswers() {
+  const options = [
+    {answer: 'ifaal', text: '<span>أَفْعَلَ</span><span>يُفْعِلُ</span><span>إِفْعَال</span>'},
+    {answer: 'tafeil', text: '<span>فَعَّلَ</span><span>يُفَعِّلُ</span><span>تَفْعِيل</span>'},
+    {answer: 'mufaala', text: '<span>فَاعَلَ</span><span>يُفَاعِلُ</span><span>مُفَاعَلَة</span>'}
+  ];
+  const shuffled = shuffle(options.slice());
+  answersEl.innerHTML = shuffled.map((opt, idx) => `
+    <div class="card" data-answer="${opt.answer}" role="button" tabindex="0">
+      <div class="badge">${toPersianNum(idx + 1)}</div>
+      <div class="card-text">${opt.text}</div>
+    </div>
+  `).join('');
+}
+
+function startGame(seconds){
+  if(current.running) return;
+  // hide start button when بازی شروع شود
+  hideStartButton();
+  current.timeLeft = Number(seconds) || 60;
+  current.score = 0;
+  current.qCount = 0;
+  current.running = true;
+  setTimeDisplay(current.timeLeft);
+  setScoreDisplay(current.score);
+  setQCount(current.qCount);
+  pauseBtn.disabled = false;
+  nextBtn.disabled = false;
+  nextQuestion();
+  clearInterval(current.timerId);
+  current.timerId = setInterval(()=>{
+    current.timeLeft--;
+    setTimeDisplay(current.timeLeft);
+    if(current.timeLeft<=0){ endGame(); }
+  },1000);
+}
+function pauseGame(){
+  if(!current.running) return;
+  clearInterval(current.timerId);
+  current.timerId = null;
+  current.running = false;
+  pauseBtn.disabled = true;
+}
+function endGame(){
+  clearInterval(current.timerId);
+  current.running = false;
+  current.timerId = null;
+  pauseBtn.disabled = true;
+  nextBtn.disabled = true;
+  finalScoreEl.textContent = toPersianNum(current.score);
+  playerNameInput.value = '';
+  // show modal centered
+  nameModal.classList.add('open');
+}
+
+function nextQuestion(){
+  document.querySelectorAll('.card').forEach(c=> c.classList.remove('correct','wrong','disabled'));
+  const prev = current.currentVerb;
+  const item = getRandomVerb(prev);
+  if(!item){
+    verbDisplay.textContent = 'هیچ فعلی موجود نیست';
+    current.currentVerb = null;
+    current.currentAnswer = null;
+    return;
+  }
+  current.currentVerb = item.v;
+  current.currentAnswer = item.group;
+  verbDisplay.textContent = item.v;
+  renderAnswers();
+}
+
+answersEl.addEventListener('click', (e) => {
+  if(!current.running) return;
+  const card = e.target.closest('.card');
+  if(!card || card.classList.contains('disabled')) return;
+  const user = card.dataset.answer;
+  const correct = current.currentAnswer;
+  if(user === correct){
+    card.classList.add('correct');
+    current.score += 10;
+  } else {
+    card.classList.add('wrong');
+  }
+  current.qCount++;
+  setScoreDisplay(current.score);
+  setQCount(current.qCount);
+  document.querySelectorAll('.card').forEach(c=> c.classList.add('disabled'));
+  setTimeout(() => { if(current.running) nextQuestion(); }, 520);
+});
+
+/* ======= امتیازدهی ======= */
+function saveScore(name){
+  const rec = {
+    name: name||'ناشناس',
+    score: current.score,
+    qCount: current.qCount,
+    time: new Date().toISOString(),
+    duration: settings.defaultTime
+  };
+  scores.unshift(rec);
+  saveJSON(STORAGE.scores, scores);
+  renderScores();
+}
+
+/* ======= پنل مدیریت: تعاملات ======= */
+let spaceCount = 0;
+let spaceTimer = null;
+document.addEventListener('keydown', (e) => {
+  const tag = document.activeElement && document.activeElement.tagName;
+  if(tag === 'INPUT' || tag === 'TEXTAREA') return;
+  if (e.code === 'Space') {
+    e.preventDefault();
+    spaceCount++;
+    if (spaceCount === 1) {
+      spaceTimer = setTimeout(() => { spaceCount = 0; }, 3000);
+    }
+    if (spaceCount >= 5) {
+      clearTimeout(spaceTimer);
+      spaceCount = 0;
+      adminPanel.classList.toggle('open');
+      const open = adminPanel.classList.contains('open');
+      adminPanel.setAttribute('aria-hidden', open? 'false' : 'true');
+      if (open) { populateTextareas(); renderScores(); }
+    }
+  }
+  if(e.key === 'Escape'){
+    if(adminPanel.classList.contains('open')){ adminPanel.classList.remove('open'); adminPanel.setAttribute('aria-hidden','true'); }
+    if(nameModal.classList.contains('open')) nameModal.classList.remove('open');
+  }
+});
+
+saveListsBtn.addEventListener('click', ()=>{
+  lists.ifaal = parseList(listIfaal.value);
+  lists.tafeil = parseList(listTafeil.value);
+  lists.mufaala = parseList(listMufaala.value);
+  saveLists();
+  populateTextareas();
+  alert('لیست‌ها ذخیره شدند.');
+});
+resetListsBtn.addEventListener('click', ()=>{
+  if(!confirm('آیا مطمئنی لیست‌ها به حالت پیش‌فرض بازنشانی شود؟')) return;
+  lists = JSON.parse(JSON.stringify(defaultData));
+  saveLists();
+  populateTextareas();
+  alert('لیست‌ها بازنشانی شدند.');
+});
+clearScoresBtn.addEventListener('click', ()=>{
+  if(!confirm('پاک کردن تمام امتیازات؟')) return;
+  scores = [];
+  saveJSON(STORAGE.scores, scores);
+  renderScores();
+});
+resetAllBtn.addEventListener('click', ()=>{
+  if(!confirm('ریست کامل: همهٔ داده‌ها (لیست‌ها، امتیاز) پاک شود؟')) return;
+  localStorage.removeItem(STORAGE.lists);
+  localStorage.removeItem(STORAGE.scores);
+  localStorage.removeItem(STORAGE.settings);
+  lists = JSON.parse(JSON.stringify(defaultData));
+  scores = [];
+  settings = {defaultTime:60};
+  populateTextareas();
+  renderScores();
+  setTimeDisplay(settings.defaultTime);
+  alert('بازنشانی کامل انجام شد.');
+});
+
+/* ======= زمان بندی / گزینه‌ها ======= */
+timeOptBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const s = parseInt(btn.dataset.sec,10);
+    settings.defaultTime = s;
+    saveJSON(STORAGE.settings, settings);
+    setTimeDisplay(settings.defaultTime);
+  });
+});
+applyCustom.addEventListener('click', ()=>{
+  const v = parseInt(customSeconds.value,10);
+  if(isNaN(v) || v<5){ alert('لطفاً یک عدد صحیح (حداقل 5 ثانیه) وارد کن'); return; }
+  settings.defaultTime = v;
+  saveJSON(STORAGE.settings, settings);
+  setTimeDisplay(settings.defaultTime);
+});
+
+/* ======= دکمه‌های پوز/بعدی ======= */
+pauseBtn.addEventListener('click', ()=>{ pauseGame(); });
+nextBtn.addEventListener('click', ()=>{ if(!current.running) return; nextQuestion(); });
+
+/* ======= دکمه شروع داخل پنل ======= */
+startGameBtn.addEventListener('click', ()=>{
+  startGame(settings.defaultTime || 60);
+});
+
+/* ======= نمایش/مخفی کردن دکمه شروع (پس از کلیک intro) ======= */
+function showStartButton(){
+  panelStartContainer.style.display = 'flex';
+}
+function hideStartButton(){
+  panelStartContainer.style.display = 'none';
+}
+
+/* ======= ذخیره نام بازیکن ======= */
+saveScoreBtn.addEventListener('click', ()=>{
+  const name = (playerNameInput.value || '').trim() || 'ناشناس';
+  saveScore(name);
+  nameModal.classList.remove('open');
+  // reset UI and show start button again
+  resetToIdle();
+});
+dismissModal.addEventListener('click', ()=>{ nameModal.classList.remove('open'); resetToIdle(); });
+
+function resetToIdle(){
+  // make sure timer stopped
+  clearInterval(current.timerId);
+  current.timerId = null;
+  current.running = false;
+  // reset counters
+  current.score = 0; current.qCount = 0; current.currentVerb = null; current.currentAnswer = null; current.timeLeft = settings.defaultTime || 60;
+  setScoreDisplay(current.score); setQCount(current.qCount); setTimeDisplay(current.timeLeft);
+  // hide panel content (cards cleared) and show start button again
+  mainPanel.classList.remove('visible');
+  mainPanel.setAttribute('aria-hidden','true');
+  // show intro again for clarity (اختیاری) — من intro را نمایش می‌دهم تا مسیر مشخص باشد
+  intro.style.display = 'flex';
+  intro.classList.remove('hidden');
+  intro.setAttribute('aria-hidden','false');
+  wrap.style.opacity = '0';
+  wrap.style.transform = 'translateY(6px)';
+  // وقتی کاربر دوباره کلیک کند مجدداً پنل می‌آید و دکمه شروع نمایش داده می‌شود
+}
+
+/* ======= هِلفِرها ======= */
+function parseList(text){ return text.split(/[\n,؛،]+/).map(s=>s.trim()).filter(Boolean); }
+
+/* ======= بارگذاری اولیه از localStorage ======= */
+function initFromStorage(){
+  lists = loadLists();
+  populateTextareas();
+  scores = loadJSON(STORAGE.scores, []);
+  settings = loadJSON(STORAGE.settings, settings) || settings;
+  renderScores();
+  const s = settings.defaultTime || 60;
+  setTimeDisplay(s);
+  // mainPanel در ابتدا مخفی باشد؛ بعد از کلیک روی intro نمایان می‌شود
+  mainPanel.classList.remove('visible');
+  mainPanel.setAttribute('aria-hidden','true');
+}
+initFromStorage();
+
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>مسابقه‌ی افعال عربی</title>
   <!-- فونت وزیر -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css">
@@ -14,82 +14,109 @@
       --danger:#e53935;
       --muted:#6b7280;
       --card:#eef4ff;
+      --success-bg: rgba(46,125,50,0.1);
+      --danger-bg: rgba(229,57,53,0.1);
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;padding:24px;background:var(--bg);font-family:"Vazir",system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;color:#0b274b}
-    .wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:22px;align-items:start;opacity:0;transform:translateY(6px);transition:opacity 0.5s ease, transform 0.5s ease}
-
-    button{cursor:pointer;padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:#fff;font-weight:600;font-family:"Vazir";transition:background 0.3s ease, transform 0.2s ease}
-    button:hover{transform:scale(1.03);background:#256628}
-    button.ghost{background:transparent;color:var(--accent);border:1px solid rgba(46,125,50,0.14);transition:background 0.3s ease, transform 0.2s ease}
-    button.ghost:hover{background:rgba(46,125,50,0.1);transform:scale(1.03)}
-
-    .panel{background:var(--panel);border-radius:14px;padding:18px;box-shadow:0 8px 20px rgba(15,23,42,0.06);transition:transform 0.3s ease, opacity 0.3s ease;opacity:0;transform:translateY(8px);}
-    .panel.visible{opacity:1;transform:translateY(0)}
-
-    .question-box{background:linear-gradient(180deg,#e8f7ff,#f4f9ff);border-radius:14px;padding:22px;text-align:center;font-weight:700;font-size:20px;color:#05305a;box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);transition:background 0.5s ease}
-    .verb{font-size:34px;margin:8px 0;direction:rtl;transition:color 0.3s ease}
-    .answers{display:flex;gap:18px;margin-top:18px;transition:opacity 0.3s ease;flex-wrap:wrap}
-    .card{flex:1;background:var(--card);border-radius:12px;padding:22px;text-align:center;cursor:pointer;transition:transform 0.25s ease,box-shadow 0.25s ease,background 0.25s ease;user-select:none;position:relative;min-height:110px;display:flex;flex-direction:column;justify-content:center}
-    .card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 10px 26px rgba(12,40,80,0.06)}
-    .badge{position:absolute;top:-12px;left:-12px;background:var(--accent);color:#fff;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;transition:transform 0.3s ease}
-    .card-text span{display:block;font-size:18px;font-weight:700;line-height:1.5;transition:color 0.3s ease}
-    .card.correct{background:var(--accent);color:#fff;box-shadow:0 10px 26px rgba(46,125,50,0.12);transform:scale(1.05)}
-    .card.wrong{background:var(--danger);color:#fff;box-shadow:0 10px 26px rgba(229,57,53,0.12);transform:scale(1.05)}
-
+    html,body{height:100%;margin:0;padding:0;background:var(--bg);font-family:"Vazir",system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;color:#0b274b; overscroll-behavior: none;}
+    .wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:22px;align-items:start;opacity:0;transform:translateY(6px);transition:opacity 0.5s ease, transform 0.5s ease; padding: 24px;}
+    button{cursor:pointer;padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:#fff;font-weight:600;font-family:"Vazir";transition:background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;}
+    button:hover{transform:scale(1.03);background:#256628; box-shadow:0 4px 12px rgba(37,102,40,0.2);}
+    button.ghost{background:transparent;color:var(--accent);border:1px solid rgba(46,125,50,0.14);transition:background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;}
+    button.ghost:hover{background:rgba(46,125,50,0.1);transform:scale(1.03); box-shadow:0 4px 12px rgba(46,125,50,0.1);}
+    .panel{background:var(--panel);border-radius:14px;padding:18px;box-shadow:0 8px 20px rgba(15,23,42,0.06);transition:transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;opacity:0;transform:translateY(8px);}
+    .panel.visible{opacity:1;transform:translateY(0); box-shadow:0 12px 28px rgba(15,23,42,0.08);}
+    .question-box{background:linear-gradient(180deg,#e8f7ff,#f4f9ff);border-radius:14px;padding:22px;text-align:center;font-weight:700;font-size:20px;color:#05305a;box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);transition:background 0.5s ease, transform 0.3s ease;}
+    .question-box:hover{transform: scale(1.01);}
+    .verb{font-size:34px;margin:8px 0;direction:rtl;transition:color 0.3s ease, transform 0.3s ease;}
+    .answers{display:flex;gap:18px;margin-top:18px;transition:opacity 0.3s ease, transform 0.3s ease;flex-wrap:wrap; animation: fadeIn 0.5s ease;}
+    .card{flex:1;background:var(--card);border-radius:12px;padding:22px;text-align:center;cursor:pointer;transition:transform 0.25s ease,box-shadow 0.25s ease,background 0.25s ease, opacity 0.3s ease;user-select:none;position:relative;min-height:110px;display:flex;flex-direction:column;justify-content:center; animation: slideUp 0.4s ease forwards;}
+    .card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 10px 26px rgba(12,40,80,0.06);}
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .badge{position:absolute;top:-12px;left:-12px;background:var(--accent);color:#fff;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;transition:transform 0.3s ease, opacity 0.3s ease; animation: bounceIn 0.5s ease;}
+    .card-text span{display:block;font-size:18px;font-weight:700;line-height:1.5;transition:color 0.3s ease;}
+    .card.correct{background:var(--accent);color:#fff;box-shadow:0 10px 26px rgba(46,125,50,0.12);transform:scale(1.05); animation: correctAnim 0.5s ease;}
+    .card.wrong{background:var(--danger);color:#fff;box-shadow:0 10px 26px rgba(229,57,53,0.12);transform:scale(1.05); animation: wrongAnim 0.5s ease;}
     /* meta area */
-    .meta{display:flex;justify-content:space-between;gap:12px;margin-top:14px;align-items:center;transition:opacity 0.3s ease}
-    .meta .score{font-weight:800;color:var(--accent);font-size:18px}
-    .meta .timer{font-weight:900;color:#05305a;font-size:28px}
-    .meta .timer.urgent{color:var(--danger)}
-    .small{font-size:13px;color:var(--muted)}
-
+    .meta{display:flex;justify-content:space-between;gap:12px;margin-top:14px;align-items:center;transition:opacity 0.3s ease, transform 0.3s ease;}
+    .meta .score{font-weight:800;color:var(--accent);font-size:18px; transition: color 0.3s ease;}
+    .meta .timer{font-weight:900;color:#05305a;font-size:28px; transition: color 0.3s ease, transform 0.3s ease;}
+    .meta .timer.urgent{color:var(--danger); animation: urgentPulse 1s infinite;}
+    .small{font-size:13px;color:var(--muted);}
     /* admin panel grid layout */
     .admin-panel{position:fixed;top:10%;left:50%;transform:translateX(-50%) scale(0.96);background:var(--panel);border-radius:14px;padding:16px;box-shadow:0 18px 40px rgba(15,23,42,0.12);max-width:900px;width:92%;opacity:0;transition:transform 0.36s cubic-bezier(.2,.9,.3,1), opacity 0.36s ease;z-index:3000;display:none}
-    .admin-panel.open{display:grid;opacity:1;transform:translateX(-50%) scale(1);grid-template-columns:1fr 320px;gap:12px}
-    .admin-panel h3{margin:0 0 10px 0;font-size:16px}
+    .admin-panel.open{display:grid;opacity:1;transform:translateX(-50%) scale(1);grid-template-columns:1fr 320px;gap:12px; animation: slideDown 0.4s ease;}
+    .admin-panel h3{margin:0 0 10px 0;font-size:16px; transition: color 0.3s ease;}
     .admin-left{display:flex;flex-direction:column;gap:10px}
     .admin-right{display:flex;flex-direction:column;gap:10px}
     label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-    textarea{width:100%;min-height:80px;padding:8px;border-radius:8px;border:1px solid #e6eef8;background:#fbfdff;resize:vertical;transition:border 0.3s ease;font-family:"Vazir"}
-    textarea:focus{border-color:var(--accent)}
+    textarea{width:100%;min-height:80px;padding:8px;border-radius:8px;border:1px solid #e6eef8;background:#fbfdff;resize:vertical;transition:border 0.3s ease, box-shadow 0.3s ease;font-family:"Vazir"}
+    textarea:focus{border-color:var(--accent); box-shadow:0 0 8px rgba(46,125,50,0.2)}
     .field{margin-bottom:12px}
     .row{display:flex;gap:8px}
-    input[type="number"], input[type="text"]{width:100%;padding:8px;border-radius:8px;border:1px solid #e6eef8;transition:border 0.3s ease;font-family:"Vazir"}
-    input[type="number"]:focus, input[type="text"]:focus{border-color:var(--accent)}
+    input[type="number"], input[type="text"]{width:100%;padding:8px;border-radius:8px;border:1px solid #e6eef8;transition:border 0.3s ease, box-shadow 0.3s ease;font-family:"Vazir"}
+    input[type="number"]:focus, input[type="text"]:focus{border-color:var(--accent); box-shadow:0 0 8px rgba(46,125,50,0.2)}
     .score-list{max-height:320px;overflow:auto;border-radius:8px;background:#fbfdff;padding:8px;border:1px solid #eef6ff;transition:background 0.3s ease}
-    .score-item{display:flex;justify-content:space-between;padding:8px;border-bottom:1px dashed #eef6ff;transition:background 0.3s ease}
-    .score-item:hover{background:rgba(46,125,50,0.05)}
+    .score-item{display:flex;justify-content:space-between;padding:8px;border-bottom:1px dashed #eef6ff;transition:background 0.3s ease, transform 0.3s ease;}
+    .score-item:hover{background:rgba(46,125,50,0.05); transform: translateX(4px);}
     .footer-actions{display:flex;gap:8px;margin-top:8px}
-
-    .modal{position:fixed;inset:0;background:rgba(3,6,23,0.45);display:none;align-items:center;justify-content:center;padding:20px;transition:opacity 0.3s ease}
-    .modal.open{display:flex;opacity:1}
-    .modal-card{background:#fff;padding:18px;border-radius:12px;min-width:320px;max-width:520px;transition:transform 0.28s ease;text-align:center}
+    .modal{position:fixed;inset:0;background:rgba(3,6,23,0.45);display:none;align-items:center;justify-content:center;padding:20px;transition:opacity 0.3s ease; z-index: 4000;}
+    .modal.open{display:flex;opacity:1; animation: fadeInModal 0.4s ease;}
+    .modal-card{background:#fff;padding:18px;border-radius:12px;min-width:320px;max-width:520px;transition:transform 0.28s ease;text-align:center; animation: popIn 0.4s ease;}
     .modal-card{transform:scale(0.96)}
     .modal.open .modal-card{transform:scale(1)}
     .muted{color:var(--muted)}
-
     /* صفحه intro */
-    #intro{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2000;transition:opacity 0.8s ease-in-out, visibility 0.8s;}
-    #intro h1{font-size:48px;margin:0;color:#05305a;transition:transform 0.5s ease}
-    #intro p{font-size:20px;margin-top:10px;color:var(--muted);transition:transform 0.5s ease}
+    #intro{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2000;transition:opacity 0.8s ease-in-out, visibility 0.8s; animation: introAnim 1s ease;}
+    #intro h1{font-size:48px;margin:0;color:#05305a;transition:transform 0.5s ease, opacity 0.5s ease; animation: fadeIn 1.5s ease-in-out;}
+    #intro p{font-size:20px;margin-top:10px;color:var(--muted);transition:transform 0.5s ease, opacity 0.5s ease; animation: fadeIn 1.5s ease-in-out;}
+    #intro .skip-hint{margin-top:12px;font-size:13px;color:var(--muted); animation: fadeIn 1.5s ease-in-out;}
     #intro.hidden{opacity:0;visibility:hidden}
-    #intro .skip-hint{margin-top:12px;font-size:13px;color:var(--muted)}
-
+    /* پنل شروع بهبود یافته */
+    #startPanel {text-align: center; padding: 20px; background: var(--panel); border-radius: 14px; box-shadow: 0 8px 20px rgba(15,23,42,0.06); transition: opacity 0.5s ease, transform 0.5s ease;}
+    #startPanel h2 {font-size: 28px; margin-bottom: 16px;}
+    #startPanel #startBtn {margin-top: 12px; padding: 18px 36px; font-size: 24px;}
+    @keyframes fadeIn {from {opacity: 0;} to {opacity: 1;}}
+    @keyframes slideUp {from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);}}
+    @keyframes bounceIn {0% {transform: scale(0.5); opacity: 0;} 50% {transform: scale(1.2);} 100% {transform: scale(1); opacity: 1;}}
+    @keyframes correctAnim {0% {transform: scale(1); background: var(--card);} 50% {transform: scale(1.1); background: var(--accent);} 100% {transform: scale(1.05); background: var(--accent);}}
+    @keyframes wrongAnim {0% {transform: scale(1); background: var(--card);} 50% {transform: scale(1.1) rotate(-3deg); background: var(--danger);} 100% {transform: scale(1.05); background: var(--danger);}}
+    @keyframes urgentPulse {0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);}}
+    @keyframes slideDown {from {opacity: 0; transform: translateY(-20px);} to {opacity: 1; transform: translateY(0);}}
+    @keyframes fadeInModal {from {opacity: 0;} to {opacity: 1;}}
+    @keyframes popIn {from {transform: scale(0.8); opacity: 0;} to {transform: scale(1); opacity: 1;}}
+    @keyframes introAnim {from {opacity: 0; transform: scale(0.95);} to {opacity: 1; transform: scale(1);}}
     @media (max-width:1000px){
-      .wrap{grid-template-columns:1fr; padding-bottom:60px}
-      .answers{flex-direction:column}
+      .wrap{grid-template-columns:1fr; padding-bottom:60px; padding: 12px;}
+      .answers{flex-direction:column; gap: 12px;}
       .admin-panel.open{grid-template-columns:1fr}
+      button {padding: 10px 16px; font-size: 16px;}
+      .verb {font-size: 28px;}
+      .card {min-height: 90px; padding: 16px;}
+      #intro h1 {font-size: 36px;}
+      #intro p {font-size: 16px;}
+      .modal-card {width: 90%;}
     }
+    @media (max-width: 600px) {
+      body {padding: 8px;}
+      .wrap {padding: 8px;}
+      .question-box {font-size: 18px; padding: 16px;}
+      .meta .timer {font-size: 24px;}
+    }
+    .touch-friendly {touch-action: manipulation;} /* برای بهبود لمس در موبایل */
+    .hearts {display: flex; justify-content: center; gap: 4px; margin-top: 8px;}
+    .heart {font-size: 20px; color: var(--danger);}
+    .heart.empty {color: var(--muted);}
   </style>
 </head>
 <body>
 <div id="intro" role="dialog" aria-modal="true">
   <h1>بازی وزن افعال عربی روش</h1>
   <p>ساخته شده توسط: محمد محسن بیک | محمد رادمنش (دبیرستان صلحا)</p>
-  <div class="skip-hint small">برای ادامه کلیک کنید</div>
+  <div class="skip-hint small">برای ادامه صفحه را لمس کنید</div>
 </div>
-
 <div class="wrap" aria-live="polite">
   <header style="display:none"></header>
   <main>
@@ -99,25 +126,28 @@
       </div>
       <div class="answers" id="answers" aria-label="گزینه‌ها">
       </div>
-
       <div class="meta">
         <div class="score">امتیاز: <span id="score">۰</span></div>
         <div class="timer" id="timeLeft">۰۰:۰۰</div>
-        <div class="small muted">سوال: <span id="qCount">۰</span></div>
+        <div class="small muted">سوال: <span id="qCount">۰</span> | درست: <span id="correctCount">۰</span> | غلط: <span id="wrongCount">۰</span></div>
       </div>
-
-      <!-- دکمه شروع جدید (نمایش داده می‌شود بعد از کلیک روی intro) -->
-      <div id="panelStartContainer" style="display:none;margin-top:14px;justify-content:center;align-items:center;">
-        <button id="startGameBtn">شروع بازی</button>
+      <div class="hearts" id="hearts" style="display:none;">
+        <span class="heart" id="heart1">❤️</span>
+        <span class="heart" id="heart2">❤️</span>
+        <span class="heart" id="heart3">❤️</span>
       </div>
-
+      <!-- پنل شروع بهبود یافته -->
+      <div id="startPanel" style="display:none;">
+        <h2>خوش آمدید!</h2>
+        <button id="startBtn">شروع بازی</button>
+      </div>
       <div style="display:flex;gap:8px;margin-top:12px">
         <button id="pauseBtn" class="ghost" disabled>توقف</button>
         <button id="nextBtn" class="ghost" disabled>عبور</button>
+        <button id="restartBtn" class="ghost" disabled>شروع مجدد</button>
       </div>
     </div>
   </main>
-
   <div class="admin-panel" id="adminPanel" aria-hidden="true">
     <div class="admin-left">
       <h3>پنل مدیریت</h3>
@@ -133,20 +163,25 @@
           <button id="applyCustom" class="ghost">اعمال</button>
         </div>
       </div>
-
+      <div class="field">
+        <label>سطح دشواری</label>
+        <div class="row">
+          <button id="easyBtn" data-diff="easy">آسان</button>
+          <button id="mediumBtn" data-diff="medium">متوسط</button>
+          <button id="hardBtn" data-diff="hard">سخت</button>
+        </div>
+      </div>
       <div class="field">
         <label>لیست گروه (أَفْعَلَ - یُفْعِل - اِفعال)</label>
         <textarea id="list-ifaal"></textarea>
         <div class="small muted">هر فعل در یک خط قرار بگیرد یا با ویرگول جدا شود.</div>
       </div>
-
       <div class="row">
         <button id="saveLists">ذخیره لیست‌ها</button>
         <button id="resetLists" class="ghost">بازنشانی لیست‌ها</button>
         <button id="resetAll" class="ghost">ریست کامل</button>
       </div>
     </div>
-
     <div class="admin-right">
       <div>
         <label>لیست گروه (فَعَّلَ - یُفَعِّلُ - تَفعیل)</label>
@@ -165,11 +200,10 @@
     </div>
   </div>
 </div>
-
 <div class="modal" id="nameModal" role="dialog" aria-modal="true">
   <div class="modal-card" role="document">
     <h3>زمان به پایان رسید</h3>
-    <p class="muted">امتیاز شما: <strong id="finalScore">۰</strong></p>
+    <p class="muted">امتیاز شما: <strong id="finalScore">۰</strong> | درست: <strong id="finalCorrect">۰</strong> | غلط: <strong id="finalWrong">۰</strong></p>
     <div style="margin-top:8px;text-align:center">
       <label>نام دانش آموز</label>
       <input id="playerName" type="text" style="width:100%;padding:10px;border-radius:8px;border:1px solid #eef6ff;font-family:'Vazir';font-size:16px" placeholder="اسم را وارد کنید..." />
@@ -180,7 +214,8 @@
     </div>
   </div>
 </div>
-
+<audio id="correctSound" src="data:audio/mpeg;base64,/+NIxAAAAAAAAAAAAAAA/+NIxAAAAAAAAMz///////////////////8AAAAA/+MYxAAAAAAAAMz///////////////////8AAAAA"></audio> <!-- Placeholder for correct sound -->
+<audio id="wrongSound" src="data:audio/mpeg;base64,/+NIxAAAAAAAAAAAAAAA/+NIxAAAAAAAAMz///////////////////8AAAAA/+MYxAAAAAAAAMz///////////////////8AAAAA"></audio> <!-- Placeholder for wrong sound -->
 <script>
 /* ======= دادهٔ اولیه ======= */
 const defaultData = {
@@ -203,13 +238,16 @@ const STORAGE = {
 /* ======= وضعیت بازی ======= */
 let lists = null;
 let scores = [];
-let settings = { defaultTime: 60 };
+let settings = { defaultTime: 60, difficulty: 'medium' };
 let current = {
   timeLeft: 0,
   timerId: null,
   running:false,
   score:0,
   qCount:0,
+  correctCount:0,
+  wrongCount:0,
+  hearts: 3,
   currentVerb:null,
   currentAnswer:null
 };
@@ -226,12 +264,17 @@ const answersEl = document.getElementById('answers');
 const timeLeftEl = document.getElementById('timeLeft');
 const scoreEl = document.getElementById('score');
 const qCountEl = document.getElementById('qCount');
-// start button now inside panel
-const startGameBtn = document.getElementById('startGameBtn');
-const panelStartContainer = document.getElementById('panelStartContainer');
-
+const correctCountEl = document.getElementById('correctCount');
+const wrongCountEl = document.getElementById('wrongCount');
+const heartsEl = document.getElementById('hearts');
+const heart1 = document.getElementById('heart1');
+const heart2 = document.getElementById('heart2');
+const heart3 = document.getElementById('heart3');
+const startPanel = document.getElementById('startPanel');
+const startBtn = document.getElementById('startBtn');
 const pauseBtn = document.getElementById('pauseBtn');
 const nextBtn = document.getElementById('nextBtn');
+const restartBtn = document.getElementById('restartBtn');
 const adminPanel = document.getElementById('adminPanel');
 const listIfaal = document.getElementById('list-ifaal');
 const listTafeil = document.getElementById('list-tafeil');
@@ -246,68 +289,62 @@ const applyCustom = document.getElementById('applyCustom');
 const resetAllBtn = document.getElementById('resetAll');
 const nameModal = document.getElementById('nameModal');
 const finalScoreEl = document.getElementById('finalScore');
+const finalCorrectEl = document.getElementById('finalCorrect');
+const finalWrongEl = document.getElementById('finalWrong');
 const playerNameInput = document.getElementById('playerName');
 const saveScoreBtn = document.getElementById('saveScoreBtn');
 const dismissModal = document.getElementById('dismissModal');
 const mainPanel = document.getElementById('mainPanel');
-
+const correctSound = document.getElementById('correctSound');
+const wrongSound = document.getElementById('wrongSound');
 /* ======= مقداردهی اولیه پنل از داده‌ها ======= */
 function populateTextareas(){
   listIfaal.value = lists.ifaal.join('\n');
   listTafeil.value = lists.tafeil.join('\n');
   listMufaala.value = lists.mufaala.join('\n');
 }
-
 /* ======= رندر امتیازها و نمایش اولیه ======= */
 function renderScores(){
   scoreList.innerHTML = '';
   if(!scores || scores.length===0){ scoreList.innerHTML = '<div class="log-item muted">هیچ امتیازی ثبت نشده</div>'; return; }
-  scores.slice(0,200).forEach(s=>{
+  scores.sort((a,b) => b.score - a.score).slice(0,200).forEach((s, idx)=>{
     const div = document.createElement('div');
     div.className = 'score-item';
     const left = document.createElement('div');
-    left.innerHTML = `<strong>${escapeHtml(s.name)}</strong> — <span class="muted">${new Date(s.time).toLocaleString('fa-IR')}</span>`;
+    left.innerHTML = `<strong>#${idx+1} ${escapeHtml(s.name)}</strong> — <span class="muted">${new Date(s.time).toLocaleString('fa-IR')}</span>`;
     const right = document.createElement('div');
-    right.innerHTML = `<strong>${toPersianNum(s.score)}</strong>`;
+    right.innerHTML = `<strong>${toPersianNum(s.score)}</strong> (درست: ${s.correct}, غلط: ${s.wrong})`;
     div.appendChild(left); div.appendChild(right);
     scoreList.appendChild(div);
   });
 }
-
-/* ======= انیمیشن intro: منتظر کلیک باشد (بدون auto-advance) ======= */
+/* ======= انیمیشن intro: منتظر کلیک باشد ======= */
 function runIntroSequence(){
   intro.classList.remove('hidden');
   intro.style.display = 'flex';
-  // force reflow for transition
   void intro.offsetWidth;
   intro.style.opacity = '1';
   wrap.style.opacity = '0';
   wrap.style.transform = 'translateY(6px)';
-
   const finishIntro = () => {
     intro.classList.add('hidden');
     intro.setAttribute('aria-hidden','true');
-    // allow the fade transition to run, سپس remove از لایه
-    setTimeout(()=>{ try{ intro.style.display = 'none'; }catch(e){} }, 380);
-    // reveal main wrap (پنل نمایش سوال‌ها)
+    setTimeout(()=>{ intro.style.display = 'none'; }, 380);
     wrap.style.opacity = '1';
     wrap.style.transform = 'translateY(0)';
-    // نمایش پنل اصلی (ولی بازی هنوز شروع نشده — فقط دکمهٔ شروع نمایان می‌شود)
     mainPanel.classList.add('visible');
     mainPanel.setAttribute('aria-hidden','false');
-    showStartButton();
+    showStartPanel();
   };
-
-  // وقتی کاربر کلیک کرد، intro بسته شود و دکمهٔ شروع نمایان گردد
   function onClick(){
     finishIntro();
     intro.removeEventListener('click', onClick);
+    intro.removeEventListener('touchend', onClick);
   }
   intro.addEventListener('click', onClick);
+  intro.addEventListener('touchend', onClick); // برای موبایل
 }
-
 if(document.readyState === 'complete') runIntroSequence(); else window.addEventListener('load', runIntroSequence);
-
 /* ======= منطق بازی ======= */
 const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
 function toPersianNum(num){
@@ -320,14 +357,18 @@ function formatTime(sec){
 }
 function setTimeDisplay(sec){
   timeLeftEl.textContent = formatTime(Math.max(0, Math.floor(Number(sec) || 0)));
-  // urgent style when < 10 seconds
   if(Number(sec) <= 10){ timeLeftEl.classList.add('urgent'); } else { timeLeftEl.classList.remove('urgent'); }
 }
 function setScoreDisplay(n){ scoreEl.textContent = toPersianNum(n); }
 function setQCount(n){ qCountEl.textContent = toPersianNum(n); }
-
+function setCorrectCount(n){ correctCountEl.textContent = toPersianNum(n); }
+function setWrongCount(n){ wrongCountEl.textContent = toPersianNum(n); }
+function updateHearts(){
+  if(settings.difficulty !== 'hard'){ heartsEl.style.display = 'none'; return; }
+  heartsEl.style.display = 'flex';
+  [heart1, heart2, heart3].forEach((h, idx) => { h.classList.toggle('empty', idx >= current.hearts); });
+}
 function escapeHtml(str){ return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]); }
-
 function getRandomVerb(previous){
   const keys = Object.keys(lists).filter(k => lists[k] && lists[k].length>0);
   if(keys.length===0) return null;
@@ -339,7 +380,6 @@ function getRandomVerb(previous){
   return all[idx];
 }
 function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
-
 function renderAnswers() {
   const options = [
     {answer: 'ifaal', text: '<span>أَفْعَلَ</span><span>يُفْعِلُ</span><span>إِفْعَال</span>'},
@@ -348,26 +388,31 @@ function renderAnswers() {
   ];
   const shuffled = shuffle(options.slice());
   answersEl.innerHTML = shuffled.map((opt, idx) => `
-    <div class="card" data-answer="${opt.answer}" role="button" tabindex="0">
+    <div class="card touch-friendly" data-answer="${opt.answer}" role="button" tabindex="0">
       <div class="badge">${toPersianNum(idx + 1)}</div>
       <div class="card-text">${opt.text}</div>
     </div>
   `).join('');
 }
-
-function startGame(seconds){
+function startGame(){
   if(current.running) return;
-  // hide start button when بازی شروع شود
-  hideStartButton();
-  current.timeLeft = Number(seconds) || 60;
+  hideStartPanel();
+  current.timeLeft = settings.defaultTime || 60;
   current.score = 0;
   current.qCount = 0;
+  current.correctCount = 0;
+  current.wrongCount = 0;
+  current.hearts = 3;
   current.running = true;
   setTimeDisplay(current.timeLeft);
   setScoreDisplay(current.score);
   setQCount(current.qCount);
+  setCorrectCount(current.correctCount);
+  setWrongCount(current.wrongCount);
+  updateHearts();
   pauseBtn.disabled = false;
   nextBtn.disabled = false;
+  restartBtn.disabled = false;
   nextQuestion();
   clearInterval(current.timerId);
   current.timerId = setInterval(()=>{
@@ -389,12 +434,13 @@ function endGame(){
   current.timerId = null;
   pauseBtn.disabled = true;
   nextBtn.disabled = true;
+  restartBtn.disabled = true;
   finalScoreEl.textContent = toPersianNum(current.score);
+  finalCorrectEl.textContent = toPersianNum(current.correctCount);
+  finalWrongEl.textContent = toPersianNum(current.wrongCount);
   playerNameInput.value = '';
-  // show modal centered
   nameModal.classList.add('open');
 }
-
 function nextQuestion(){
   document.querySelectorAll('.card').forEach(c=> c.classList.remove('correct','wrong','disabled'));
   const prev = current.currentVerb;
@@ -410,8 +456,9 @@ function nextQuestion(){
   verbDisplay.textContent = item.v;
   renderAnswers();
 }
-
-answersEl.addEventListener('click', (e) => {
+answersEl.addEventListener('click', handleAnswer);
+answersEl.addEventListener('touchend', handleAnswer); // بهبود برای موبایل
+function handleAnswer(e) {
   if(!current.running) return;
   const card = e.target.closest('.card');
   if(!card || card.classList.contains('disabled')) return;
@@ -420,30 +467,49 @@ answersEl.addEventListener('click', (e) => {
   if(user === correct){
     card.classList.add('correct');
     current.score += 10;
+    current.correctCount++;
+    correctSound.play();
   } else {
     card.classList.add('wrong');
+    current.wrongCount++;
+    if(settings.difficulty === 'easy'){
+      // بدون کم کردن امتیاز
+    } else if(settings.difficulty === 'medium'){
+      current.score -= 3; // جریمه برای غلط
+    } else if(settings.difficulty === 'hard'){
+      current.hearts--;
+      updateHearts();
+      if(current.hearts <= 0){
+        endGame();
+        return;
+      }
+    }
+    wrongSound.play();
   }
   current.qCount++;
   setScoreDisplay(current.score);
   setQCount(current.qCount);
+  setCorrectCount(current.correctCount);
+  setWrongCount(current.wrongCount);
   document.querySelectorAll('.card').forEach(c=> c.classList.add('disabled'));
   setTimeout(() => { if(current.running) nextQuestion(); }, 520);
-});
-
+}
 /* ======= امتیازدهی ======= */
 function saveScore(name){
   const rec = {
     name: name||'ناشناس',
     score: current.score,
+    correct: current.correctCount,
+    wrong: current.wrongCount,
     qCount: current.qCount,
     time: new Date().toISOString(),
-    duration: settings.defaultTime
+    duration: settings.defaultTime,
+    difficulty: settings.difficulty
   };
   scores.unshift(rec);
   saveJSON(STORAGE.scores, scores);
   renderScores();
 }
-
 /* ======= پنل مدیریت: تعاملات ======= */
 let spaceCount = 0;
 let spaceTimer = null;
@@ -459,10 +525,12 @@ document.addEventListener('keydown', (e) => {
     if (spaceCount >= 5) {
       clearTimeout(spaceTimer);
       spaceCount = 0;
-      adminPanel.classList.toggle('open');
-      const open = adminPanel.classList.contains('open');
-      adminPanel.setAttribute('aria-hidden', open? 'false' : 'true');
-      if (open) { populateTextareas(); renderScores(); }
+      if(!isMobile()) {
+        adminPanel.classList.toggle('open');
+        const open = adminPanel.classList.contains('open');
+        adminPanel.setAttribute('aria-hidden', open? 'false' : 'true');
+        if (open) { populateTextareas(); renderScores(); }
+      }
     }
   }
   if(e.key === 'Escape'){
@@ -470,7 +538,25 @@ document.addEventListener('keydown', (e) => {
     if(nameModal.classList.contains('open')) nameModal.classList.remove('open');
   }
 });
-
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 600;
+}
+if(isMobile()) {
+  const adminBtn = document.createElement('button');
+  adminBtn.textContent = 'پنل مدیریت';
+  adminBtn.classList.add('ghost');
+  adminBtn.style.position = 'fixed';
+  adminBtn.style.bottom = '20px';
+  adminBtn.style.left = '50%';
+  adminBtn.style.transform = 'translateX(-50%)';
+  document.body.appendChild(adminBtn);
+  adminBtn.addEventListener('click', () => {
+    adminPanel.classList.toggle('open');
+    const open = adminPanel.classList.contains('open');
+    adminPanel.setAttribute('aria-hidden', open? 'false' : 'true');
+    if (open) { populateTextareas(); renderScores(); }
+  });
+}
 saveListsBtn.addEventListener('click', ()=>{
   lists.ifaal = parseList(listIfaal.value);
   lists.tafeil = parseList(listTafeil.value);
@@ -499,13 +585,12 @@ resetAllBtn.addEventListener('click', ()=>{
   localStorage.removeItem(STORAGE.settings);
   lists = JSON.parse(JSON.stringify(defaultData));
   scores = [];
-  settings = {defaultTime:60};
+  settings = {defaultTime:60, difficulty: 'medium'};
   populateTextareas();
   renderScores();
   setTimeDisplay(settings.defaultTime);
   alert('بازنشانی کامل انجام شد.');
 });
-
 /* ======= زمان بندی / گزینه‌ها ======= */
 timeOptBtns.forEach(btn=>{
   btn.addEventListener('click', ()=>{
@@ -522,57 +607,59 @@ applyCustom.addEventListener('click', ()=>{
   saveJSON(STORAGE.settings, settings);
   setTimeDisplay(settings.defaultTime);
 });
-
-/* ======= دکمه‌های پوز/بعدی ======= */
+/* ======= سختی از پنل مدیریت ======= */
+document.getElementById('easyBtn').addEventListener('click', () => {
+  settings.difficulty = 'easy';
+  saveJSON(STORAGE.settings, settings);
+});
+document.getElementById('mediumBtn').addEventListener('click', () => {
+  settings.difficulty = 'medium';
+  saveJSON(STORAGE.settings, settings);
+});
+document.getElementById('hardBtn').addEventListener('click', () => {
+  settings.difficulty = 'hard';
+  saveJSON(STORAGE.settings, settings);
+});
+/* ======= دکمه‌های پوز/بعدی/ریستارت ======= */
 pauseBtn.addEventListener('click', ()=>{ pauseGame(); });
 nextBtn.addEventListener('click', ()=>{ if(!current.running) return; nextQuestion(); });
-
-/* ======= دکمه شروع داخل پنل ======= */
-startGameBtn.addEventListener('click', ()=>{
-  startGame(settings.defaultTime || 60);
+restartBtn.addEventListener('click', ()=>{ if(confirm('شروع مجدد بازی؟')) resetToIdle(); });
+/* ======= نمایش/مخفی کردن پنل شروع ======= */
+function showStartPanel(){
+  startPanel.style.display = 'block';
+}
+function hideStartPanel(){
+  startPanel.style.display = 'none';
+}
+/* ======= شروع بازی از پنل شروع ======= */
+startBtn.addEventListener('click', () => {
+  startGame();
 });
-
-/* ======= نمایش/مخفی کردن دکمه شروع (پس از کلیک intro) ======= */
-function showStartButton(){
-  panelStartContainer.style.display = 'flex';
-}
-function hideStartButton(){
-  panelStartContainer.style.display = 'none';
-}
-
 /* ======= ذخیره نام بازیکن ======= */
 saveScoreBtn.addEventListener('click', ()=>{
   const name = (playerNameInput.value || '').trim() || 'ناشناس';
   saveScore(name);
   nameModal.classList.remove('open');
-  // reset UI and show start button again
   resetToIdle();
 });
 dismissModal.addEventListener('click', ()=>{ nameModal.classList.remove('open'); resetToIdle(); });
-
 function resetToIdle(){
-  // make sure timer stopped
   clearInterval(current.timerId);
   current.timerId = null;
   current.running = false;
-  // reset counters
-  current.score = 0; current.qCount = 0; current.currentVerb = null; current.currentAnswer = null; current.timeLeft = settings.defaultTime || 60;
-  setScoreDisplay(current.score); setQCount(current.qCount); setTimeDisplay(current.timeLeft);
-  // hide panel content (cards cleared) and show start button again
+  current.score = 0; current.qCount = 0; current.correctCount = 0; current.wrongCount = 0; current.hearts = 3; current.timeLeft = settings.defaultTime || 60;
+  setScoreDisplay(current.score); setQCount(current.qCount); setCorrectCount(current.correctCount); setWrongCount(current.wrongCount); setTimeDisplay(current.timeLeft);
+  updateHearts();
   mainPanel.classList.remove('visible');
   mainPanel.setAttribute('aria-hidden','true');
-  // show intro again for clarity (اختیاری) — من intro را نمایش می‌دهم تا مسیر مشخص باشد
   intro.style.display = 'flex';
   intro.classList.remove('hidden');
   intro.setAttribute('aria-hidden','false');
   wrap.style.opacity = '0';
   wrap.style.transform = 'translateY(6px)';
-  // وقتی کاربر دوباره کلیک کند مجدداً پنل می‌آید و دکمه شروع نمایش داده می‌شود
 }
-
 /* ======= هِلفِرها ======= */
 function parseList(text){ return text.split(/[\n,؛،]+/).map(s=>s.trim()).filter(Boolean); }
-
 /* ======= بارگذاری اولیه از localStorage ======= */
 function initFromStorage(){
   lists = loadLists();
@@ -582,12 +669,10 @@ function initFromStorage(){
   renderScores();
   const s = settings.defaultTime || 60;
   setTimeDisplay(s);
-  // mainPanel در ابتدا مخفی باشد؛ بعد از کلیک روی intro نمایان می‌شود
   mainPanel.classList.remove('visible');
   mainPanel.setAttribute('aria-hidden','true');
 }
 initFromStorage();
-
 </script>
 </body>
 </html>
